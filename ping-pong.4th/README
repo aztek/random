@@ -1,0 +1,10 @@
+This is a simple ping-pong game written in Forth back in 2009.
+
+It has only been tested in GNU Forth (http://www.jwdt.com/~paysan/gforth.html).
+
+Usage:
+    $ gforth ping-pong.4th
+
+Control key are:
+    w (up) and s (down) for the first player
+    o (up) and l (down) for the second player
