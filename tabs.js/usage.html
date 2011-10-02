@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Various usages of tabs.js plugin</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.1/mootools-yui-compressed.js" type="text/javascript"></script>
+        <script src="tabs.js" type="text/javascript"></script>
+        <style type="text/css">
+            body {
+                font-size: 15px;
+            }
+            
+            section {
+                border: 5px #DDD solid;
+                padding: 10px;
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+            
+            h2 {
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+            
+            ol {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                float: left;
+                clear: left;
+            }
+                
+            ol.tabs li {
+                float: left;
+                margin-right: 1.0em;
+                color: #0055CC;
+                line-height: 1.6em;
+                cursor: pointer;
+                padding: 0 0.3em;
+            }
+            
+            ol.tabs li span {
+                border-bottom: 1px #0055CC dashed;
+            }
+            
+            ol.tabs li.selected {
+                background-color: #F1EBC9;
+            }
+
+            ol.tabs li.selected {
+                cursor: default;
+            }
+
+            ol.tabs li.selected span {
+                color: #111;
+                cursor: default;
+                border-bottom: none;
+                margin: 0;
+            }
+
+            ol.disabled * {
+                cursor: default !important;
+            }
+
+            ol.disabled li span {
+                color: #DDD;
+                border-color: #DDD;
+            }
+
+            ol.disabled li span.selected {
+                color: #333 !important;
+            }
+            
+            ol.fancy-tabs {
+                float: left;
+                margin-right: 1.0em;
+                line-height: 1.6em;
+                cursor: pointer;
+                padding: 0 0.3em;
+            }
+            
+            ol.fancy-tabs li {
+                float: left;
+                border: 1px green solid;
+                padding: 2px 6px;
+                margin-right: 1.0em;
+                color: green;
+            }
+            
+            ol.fancy-tabs li.fancy-selected {
+                color: #FFF;
+                background-color: green;
+            }
+            
+            #pages {
+                margin-top: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            window.addEvent('domready', function(){
+                $("switcher").makeTabs(); // is equal to new TabsTransformer($("switcher"))
+                $$("form").addEvent("submit", function(){
+                    alert("This is what we would send: " + this.toQueryString());
+                    return false;
+                });
+                
+                $("tabs").makeTabs({
+                    callback: function(tabname){
+                        $$(".page").setStyle("display", "none");
+                        $("page-" + tabname).setStyle("display", "block");
+                    }
+                });
+                
+                $("disabled").makeTabs();
+                $("fancy").makeTabs({
+                    classes: {
+                        "list": "fancy-tabs", 
+                        "selected": "fancy-selected"
+                    }
+                });
+                
+                $("with-callback").makeTabs({
+                    callback: function(color){
+                        $("with-callback-result").set({
+                            text: color,
+                            styles: {
+                                color: color
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Various usages of tabs.js plugin</h1>
+        <section>
+            <h2>Simple replacement for <code>&lt;select&gt;</code> element</h2>
+            <form action="." id="form">
+                <select name="switcher" id="switcher">
+                    <option value="on">On</option>
+                    <option value="off" selected="selected">Off</option>
+                </select>
+                <button type="submit" id="send-form">Send form</button>
+            </form>
+        </section>
+        <section>
+            <h2>Disabled <code>&lt;select&gt;</code></h2>
+            <select id="disabled" disabled="disabled">
+                <option>jQuery</option>
+                <option selected="selected">MooTools</option>
+                <option>Prototype</option>
+                <option>Dojo</option>
+            </select>
+        </section>
+        <section>
+            <h2>Simple styling with CSS classes</h2>
+            <select id="fancy">
+                <option>London</option>
+                <option>Paris</option>
+                <option>Moscow</option>
+                <option>Reykjavik</option>
+            </select>
+        </section>
+        <section>
+            <h2>Using callback functions</h2>
+            <select id="with-callback">
+                <option>Red</option>
+                <option>Green</option>
+                <option>Blue</option>
+                <option>Yellow</option>
+                <option>Black</option>
+            </select>
+            <p>You have selected <span id="with-callback-result"></span></p>
+        </section>
+        <section>
+            <h2>Tabs for multiple pages</h2>
+            <select name="pages" id="tabs">
+                <option value="elephant">Elephant</option>
+                <option value="rhino">Rhino</option>
+                <option value="hippototamus">Hippopotamus</option>
+            </select>
+            <ol id="pages">
+                <li class="page" id="page-elephant">
+                    <ul>
+                        <li>Jumbo, a circus elephant, has entered the English language as a synonym for "large".</li>
+                        <li>Elephants are herbivores, spending 16 hours a day collecting plant food. Their diet is at least 50% grasses, supplemented with leaves, bamboo, twigs, bark, roots, and small amounts of fruits, seeds and flowers.</li>
+                        <li>Walking at a normal pace an elephant covers about 2 to 4 miles an hour (3 to 6 km/h) but they can reach 24 miles an hour (40 km/h) at full speed.</li>
+                        <li>An elephant's skin is extremely tough around most parts of its body and measures about 2.5 cm (1 in) thick.</li>
+                        <li>Both male and female African elephants have large tusks that can reach over 10 ft (3 m) in length and weigh over 200 lb (90 kg).</li>
+                    </ul>
+                </li>
+                <li class="page" id="page-hippototamus">
+                    <ul>
+                        <li>A common hippo's hide alone can weigh half a ton!</li>
+                        <li>Male hippos will attack young hippos in the water, but not on land.</li>
+                        <li>An adult hippopotamus can stay submerged for 5 to 6 minutes.</li>
+                        <li>A baby hippo can eat grass in 3 weeks, but nurses for a year.</li>
+                        <li>A hippopotamus can eat 100 to 150 pounds of grass in a night.</li>
+                        <li>A hippo's tail is up to 22 inches long.</li>
+                    </ul>
+                </li>
+                <li class="page" id="page-rhino">
+                    <ul>
+                        <li>One lump or two? Javan and Indian rhinos only have one horn. White, black and Sumatran rhinoceros have two.</li>
+                        <li>Rhinos aren't really bad tempered—they often charge because they are startled.</li>
+                        <li>Sumatran rhinoceros are hairy—at least compared to the other species of rhinos. Next to the Javan rhino, they are the most endangered.</li>
+                        <li>A group of rhinos is called a "crash".</li>
+                        <li>Rhinoceros roll in mud so they don't get sunburned.</li>
+                        <li>A rhino dung pile can be 3 feet high!</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+    </body>
+</html>
